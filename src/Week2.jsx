@@ -54,9 +54,6 @@ const drinkMenuData = [
   }
 ];
 
-
-
-
 function Week2() {
   const [drinkMenu] = useState(drinkMenuData);
   const [cart, setCart] = useState([])
@@ -64,16 +61,6 @@ function Week2() {
   const [sum, setSum] = useState(0)
   const [description, setDescription] = useState('')
 
-  function addToCartError(drink) {
-    cart.push({
-      ...drink,
-      id: new Date().getTime(),
-      quantity: 1,
-      subtotal: drink.price,
-    })
-    console.log(cart);
-    setCart(cart);
-  }
   const addToCart2 = (drink) => {
     setCart([...cart, {
       ...drink,

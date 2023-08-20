@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DrinkMenu from "./components/DrinkMenu";
 import DrinkCart from "./components/DrinkCart";
 import DrinkOrder from "./components/DrinkOrder";
@@ -60,15 +60,18 @@ const drinkMenuData = [
 function Week2() {
   const [drinkMenu] = useState(drinkMenuData);
   const [cart, setCart] = useState([])
-  const [order, setOrder]= useState({})
+  const [order, setOrder] = useState({})
+  const [sum, setSum] = useState(0)
+  const [description, setDescription] = useState('')
+
   function addToCartError(drink) {
     cart.push({
       ...drink,
       id: new Date().getTime(),
       quantity: 1,
       subtotal: drink.price,
-      })
-      console.log(cart);
+    })
+    console.log(cart);
     setCart(cart);
   }
   const addToCart2 = (drink) => {
@@ -92,36 +95,45 @@ function Week2() {
     })
     setCart(newCart)
   }
-
   const createOrder = () => {
     setOrder({
       id: new Date().getTime(),
-      cart
+      cart,
+      sum,
+      description
     })
 
     setCart([])
+    setDescription('')
   }
+  useEffect(() => {
+    const total = cart.reduce((pre, next) => {
+      return pre + next.price
+    }, 0)
+    setSum(total)
+  }, [cart])
+
   return <div id="root">
     <div className="container mt-5">
       <div className="row">
         <div className="col-md-4">
           <div className="list-group">
-              {drinkMenu.map((item) => {
-                return<a href="#" className="list-group-item list-group-item-action" key={item.id} 
-                  onClick={((e) => {
-                    e.preventDefault();
-                    addToCart2(item)
+            {drinkMenu.map((item) => {
+              return <a href="#" className="list-group-item list-group-item-action" key={item.id}
+                onClick={((e) => {
+                  e.preventDefault();
+                  addToCart2(item)
 
-                  })}>
-                   <DrinkMenu
-                      id={item.id}
-                      name={item.name}
-                      description={item.description}
-                      price={item.price}
-                    />
-                </a>
-              })}
- 
+                })}>
+                <DrinkMenu
+                  id={item.id}
+                  name={item.name}
+                  description={item.description}
+                  price={item.price}
+                />
+              </a>
+            })}
+
           </div>
         </div>
         <div className="col-md-8">
@@ -137,74 +149,87 @@ function Week2() {
               </tr>
             </thead>
             <tbody>
-            {cart.map((item) => {
-            return (
-              <DrinkCart key={item.id}
-                id={item.id}
-                name={item.name}
-                quantity={item.quantity}
-                description={item.description}
-                price={item.price}
-                subtotal={item.subtotal}
-                updateCart={updateCart}
-              />
-            )})}
+              {
+                cart.map((item) => {
+                  return (
+                    <DrinkCart key={item.id}
+                      id={item.id}
+                      name={item.name}
+                      quantity={item.quantity}
+                      description={item.description}
+                      price={item.price}
+                      subtotal={item.subtotal}
+                      updateCart={updateCart}
+                    />
+                  )
+                })
+              }
             </tbody>
           </table>
-          <div className="text-end mb-3">
-            <h5>總計: <span>$100</span></h5>
-          </div>
-          <textarea
-            className="form-control mb-3"
-            rows="3"
-            placeholder="備註"
-          ></textarea>
-          <div className="text-end">
-            <button className="btn btn-primary" onClick={((e)=>{
-              e.preventDefault()
-              createOrder()
-            })}>送出</button>
-          </div>
+          {
+            cart.length === 0 ? <div className="alert alert-primary text-center" role="alert">
+              請選擇商品
+            </div> : (<>
+              <div className="text-end mb-3">
+                <h5>總計: <span>${sum}</span></h5>
+              </div>
+              <textarea
+                className="form-control mb-3"
+                rows="3"
+                placeholder="備註"
+                onChange={((e) => {
+                  setDescription(e.target.value)
+                })}
+              >{description}</textarea>
+              <div className="text-end">
+                <button className="btn btn-primary" onClick={((e) => {
+                  e.preventDefault()
+                  createOrder()
+                })}>送出</button>
+              </div>
+            </>)
+          }
         </div>
       </div>
       <hr />
       <div className="row justify-content-center">
         <div className="col-8">
-        {
-          !order.id ? <div className="alert alert-secondary text-center" role="alert">
-            尚未建立訂單
-          </div> :
-          (<div className="card">
-            <div className="card-body">
-              <div className="card-title">
-                <h5>訂單</h5>
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th scope="col">品項</th>
-                      <th scope="col">數量</th>
-                      <th scope="col">小計</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-   
-                    {order.cart.map((item) => {
-                      return (
-                      <DrinkOrder key={item.id}
-                        name={item.name}
-                        quantity={item.quantity}
-                        subtotal={item.subtotal}
-                      />
-                    )})}
-                  </tbody>
-                </table>
-                <div className="text-end">備註: <span>都不要香菜</span></div>
-                <div className="text-end">
-                  <h5>總計: <span>$145</span></h5>
+          {
+            !order.id ? <div className="alert alert-secondary text-center" role="alert">
+              尚未建立訂單
+            </div> :
+              (<div className="card">
+                <div className="card-body">
+                  <div className="card-title">
+                    <h5>訂單</h5>
+                    <table className="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">品項</th>
+                          <th scope="col">數量</th>
+                          <th scope="col">小計</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+
+                        {order.cart.map((item) => {
+                          return (
+                            <DrinkOrder key={item.id}
+                              name={item.name}
+                              quantity={item.quantity}
+                              subtotal={item.subtotal}
+                            />
+                          )
+                        })}
+                      </tbody>
+                    </table>
+                    <div className="text-end">備註: <span>{order.description}</span></div>
+                    <div className="text-end">
+                      <h5>總計: <span>${order.sum}</span></h5>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </div>)
+              </div>)
           }
         </div>
       </div>

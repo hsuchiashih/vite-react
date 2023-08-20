@@ -1,4 +1,3 @@
-import { useState } from "react";
 function DrinkCart({ id, name, description, quantity, price, subtotal, updateCart }) {  
   return (<tr>
     <td><button type="button" className="btn btn-sm">x</button></td>

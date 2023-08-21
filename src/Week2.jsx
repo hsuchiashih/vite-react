@@ -61,13 +61,16 @@ function Week2() {
   const [sum, setSum] = useState(0)
   const [description, setDescription] = useState('')
 
-  const addToCart2 = (drink) => {
-    setCart([...cart, {
-      ...drink,
-      id: new Date().getTime(),
-      quantity: 1,
-      subtotal: drink.price,
-    }])
+  const addToCart = (drink) => {
+    const drinkInCart = cart.find(item => item.name === drink.name);
+    if (!drinkInCart) {
+      setCart([...cart, {
+        ...drink,
+        id: new Date().getTime(),
+        quantity: 1,
+        subtotal: drink.price,
+      }])
+    }
   }
   const updateCart = (id, value) => {
     const newCart = cart.map((cartItem) => {
@@ -93,9 +96,13 @@ function Week2() {
     setCart([])
     setDescription('')
   }
+  const deleteCartItem = (id) => {
+    const newCart = [...cart].filter(item => item.id !== id);
+    setCart(newCart);
+  }
   useEffect(() => {
     const total = cart.reduce((pre, next) => {
-      return pre + next.price
+      return pre + next.subtotal
     }, 0)
     setSum(total)
   }, [cart])
@@ -109,8 +116,7 @@ function Week2() {
               return <a href="#" className="list-group-item list-group-item-action" key={item.id}
                 onClick={((e) => {
                   e.preventDefault();
-                  addToCart2(item)
-
+                  addToCart(item)
                 })}>
                 <DrinkMenu
                   id={item.id}
@@ -147,6 +153,7 @@ function Week2() {
                       price={item.price}
                       subtotal={item.subtotal}
                       updateCart={updateCart}
+                      deleteCartItem={deleteCartItem}
                     />
                   )
                 })
@@ -163,6 +170,7 @@ function Week2() {
               <textarea
                 className="form-control mb-3"
                 rows="3"
+                value=''
                 placeholder="備註"
                 onChange={((e) => {
                   setDescription(e.target.value)

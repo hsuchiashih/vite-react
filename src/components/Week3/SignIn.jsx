@@ -32,18 +32,31 @@ const signIn = async () => {
 return(
   <div>
   <h2>登入</h2>
-  <input
-    value={email}
-    onChange={(e) => setEmail(e.target.value)}
-    placeholder='Email'
-  />
-  <input
-    value={password}
-    onChange={(e) => setPassword(e.target.value)}
-    placeholder='Password'
-    type='password'
-  />
-  <button onClick={signIn}>Sign In</button>
+  <div className="form-group">
+    <label htmlFor="signInEmail">Email</label>
+    <input
+      type="email"
+      className="form-control"
+      id="signInEmail"
+      aria-describedby="emailHelp"
+      placeholder="請輸入電子信箱"
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+    />
+  </div>
+  <div className="form-group">
+    <label htmlFor="signInPassword">Password</label>
+    <input
+      type="password"
+      className="form-control"
+      id="signInPassword"
+      aria-describedby="passwordHelp"
+      placeholder="請輸入密碼"
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+    />
+  </div>
+  <button className="btn btn-primary formControls_btnSubmit mt-3" onClick={signIn}>登入</button>
   <p>{message}</p>
 </div>
   )

@@ -22,27 +22,47 @@ const signUp = async () => {
 }
 
 return(
-  <div>
+  <div className="pt-5">
   <h2>註冊</h2>
-  <input
-    value={email}
-    onChange={(e) => setEmail(e.target.value)}
-    placeholder='Email'
-  />
-  <input
-    value={password}
-    onChange={(e) => setPassword(e.target.value)}
-    placeholder='Password'
-    type='password'
-  />
-  <input
-    value={nickname}
-    onChange={(e) => setNickname(e.target.value)}
-    placeholder='Nickname'
-    type='text'
-  />
-  <button onClick={signUp}>Sign Up</button>
-  <p>{message}</p>
+    <div className="form-group">
+      <label htmlFor="signUpEmail">Email</label>
+      <input
+        type="email"
+        className="form-control"
+        id="signUpEmail"
+        aria-describedby="emailHelp"
+        placeholder="請輸入電子信箱"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+    </div>
+    <div className="form-group">
+      <label htmlFor="signUpPassword">Password</label>
+      <input
+        type="password"
+        className="form-control"
+        id="signUpPassword"
+        aria-describedby="passwordHelp"
+        placeholder="請輸入密碼"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+    </div>
+    <div className="form-group">
+    <label htmlFor="nickname">暱稱</label>
+    <input
+        type="text"
+        className="form-control"
+        id="nickname"
+        aria-describedby="nicknameHelp"
+        placeholder="請輸入暱稱"
+        value={nickname}
+        onChange={(e) => setNickname(e.target.value)}
+      />
+    </div>
+    <button className="btn formControls_btnSubmit mt-3" onClick={signUp}>註冊</button>
+    <p>{message}</p>
+
 </div>
   )
 }

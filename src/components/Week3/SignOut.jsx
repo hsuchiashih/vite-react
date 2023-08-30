@@ -26,12 +26,18 @@ const signOut = async () => {
 return(
   <div>
     <h2>登出</h2>
-    <input
-      value={token}
-      onChange={(e) => setToken(e.target.value)}
-      placeholder='Token'
-    />
-    <button onClick={signOut}>signOut</button>
+    <div className="form-group">
+      <label htmlFor="signOutToken">Token</label>
+      <input
+        type="text"
+        className="form-control"
+        id="signOutToken"
+        placeholder="請輸入Token"
+        value={token}
+        onChange={(e) => setToken(e.target.value)}
+      />
+    </div>
+    <button className="btn formControls_btnSubmit mt-3" onClick={signOut}>登出</button>
     <p>{message}</p>
   </div>
   )

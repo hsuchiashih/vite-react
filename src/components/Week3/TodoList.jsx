@@ -8,7 +8,7 @@ function TodoList({todoToken}) {
   const [todoEdit, setTodoEdit] = useState({});
 
   useEffect(() => {
-    getTodos();
+   getTodos();
   }, []);
   const getTodos = async() => {
     try {
@@ -76,38 +76,38 @@ function TodoList({todoToken}) {
     await axios.patch(`${site}/todos/${id}/toggle`, {}, config);
     getTodos();
   }
-  return(<>
-    <h2>todolist</h2>
-    <input
-      value={newTodo}
-      onChange={(e) => setNewTodo(e.target.value)}
-      placeholder='New Todo'
-    />
-    <button onClick={addTodo}>Add Todo</button>
-    <ul>
-      {todoList.map((item) => {
-        return <li key={item.id}> 
-          {item.content} {item.status ? '完成' : '未完成'}
-          | {todoEdit[item.id]}
-          <input type="text" placeholder='更新值' onChange={
-            (e) => {
-              const newTodoEdit = {
-                ...todoEdit
+  return(
+    <>
+      <h2>todolist</h2>
+      <input
+        value={newTodo}
+        onChange={(e) => setNewTodo(e.target.value)}
+        placeholder='New Todo'
+      />
+      <button onClick={addTodo}>Add Todo</button>
+      <ul>
+        {todoList.map((item) => {
+          return <li key={item.id}> 
+            {item.content} {item.status ? '完成' : '未完成'}
+            | {todoEdit[item.id]}
+            <input type="text" placeholder='更新值' onChange={
+              (e) => {
+                const newTodoEdit = {
+                  ...todoEdit
+                }
+                newTodoEdit[item.id] = e.target.value
+                setTodoEdit(newTodoEdit)
               }
-              newTodoEdit[item.id] = e.target.value
-              setTodoEdit(newTodoEdit)
-            }
-          } />
-          <button onClick={() => deleteTodo(item.id)}>Delete</button>
-          <button onClick={() => updateTodo(item.id)}>Update</button>
-          <button onClick={() => toggleStatus(item.id)}>
-            Toggle Status
-          </button>
-        </li>
-      })}
-    </ul>
+            } />
+            <button onClick={() => deleteTodo(item.id)}>Delete</button>
+            <button onClick={() => updateTodo(item.id)}>Update</button>
+            <button onClick={() => toggleStatus(item.id)}>
+              Toggle Status
+            </button>
+          </li>
+        })}
+      </ul>
     </>
-
   )
 }
 

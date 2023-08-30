@@ -26,12 +26,18 @@ const checkOut = async() => {
 return(
   <div>
     <h2>驗證</h2>
-    <input
-      value={token}
-      onChange={(e) => setToken(e.target.value)}
-      placeholder='Token'
-    />
-    <button onClick={checkOut}>checkOut</button>
+      <div className="form-group">
+        <label htmlFor="checkOutToken">Email</label>
+        <input
+          type="token"
+          className="form-control"
+          id="checkOutToken"
+          placeholder="請輸入Token"
+          value={token}
+          onChange={(e) => setToken(e.target.value)}
+        />
+      </div>
+    <button className="btn btn-primary formControls_btnSubmit mt-3" onClick={checkOut}>驗證</button>
     <p>{message}</p>
   </div>
   )
